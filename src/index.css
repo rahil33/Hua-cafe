@@ -1,0 +1,325 @@
+@import "tailwindcss";
+
+:root {
+  --ol: #5b3a29;
+  --cream: #fdf6ea;
+  --peach: #f3c9a8;
+  --salmon: #f08a6c;
+}
+
+html, body, #root {
+  height: 100%;
+  margin: 0;
+  overscroll-behavior: none;
+}
+
+#root {
+  height: 100dvh;
+}
+
+body {
+  font-family: "Itim", "Comic Sans MS", system-ui, sans-serif;
+  background: #e9d8c2;
+  color: var(--ol);
+  user-select: none;
+  -webkit-user-select: none;
+  -webkit-tap-highlight-color: transparent;
+  touch-action: manipulation;
+}
+
+button, input, textarea, select {
+  font-family: inherit;
+  touch-action: manipulation;
+}
+
+/* Only the play field swallows touch drags; panels and inputs keep scrolling. */
+.pixel-stage {
+  touch-action: none;
+}
+
+.scroll-soft {
+  touch-action: pan-y;
+  -webkit-overflow-scrolling: touch;
+  overscroll-behavior: contain;
+}
+
+.safe-t { padding-top: max(8px, env(safe-area-inset-top)); }
+.safe-b { padding-bottom: max(8px, env(safe-area-inset-bottom)); }
+.tap-min { min-height: 38px; }
+
+/* The play space deliberately uses hard edges, stepped corners and a visible
+   low-resolution dither layer so the drawn SVG world reads as pixel art. */
+.pixel-stage {
+  font-family: "Silkscreen", monospace;
+  image-rendering: pixelated;
+  image-rendering: crisp-edges;
+  border-radius: 4px !important;
+  box-shadow: 5px 5px 0 rgba(91, 58, 41, 0.42), 9px 9px 0 rgba(91, 58, 41, 0.16) !important;
+}
+
+.pixel-stage svg {
+  shape-rendering: crispEdges;
+  image-rendering: pixelated;
+}
+
+.pixel-stage svg * {
+  stroke-linejoin: bevel !important;
+  stroke-linecap: square !important;
+}
+
+.pixel-stage::after {
+  content: "";
+  pointer-events: none;
+  position: absolute;
+  inset: 0;
+  z-index: 5000;
+  opacity: 0.12;
+  mix-blend-mode: multiply;
+  background-image:
+    linear-gradient(90deg, rgba(91, 58, 41, 0.22) 1px, transparent 1px),
+    linear-gradient(rgba(91, 58, 41, 0.22) 1px, transparent 1px);
+  background-size: 4px 4px;
+}
+
+.pixel-stage .floor {
+  background-image:
+    repeating-linear-gradient(0deg, transparent 0 46px, rgba(196, 128, 92, 0.5) 46px 48px),
+    repeating-linear-gradient(90deg, transparent 0 11px, rgba(255, 239, 213, 0.16) 11px 13px),
+    repeating-linear-gradient(0deg, transparent 0 12px, rgba(164, 101, 76, 0.12) 12px 14px);
+  background-size: 100% 48px, 100% 100%, 100% 100%;
+}
+
+.pixel-stage .wall {
+  background-image:
+    repeating-linear-gradient(90deg, transparent 0 14px, rgba(214, 184, 140, 0.2) 14px 16px),
+    repeating-linear-gradient(0deg, transparent 0 14px, rgba(214, 184, 140, 0.15) 14px 16px);
+}
+
+.nameplate {
+  font-family: "Silkscreen", monospace;
+  font-weight: 700;
+  letter-spacing: 0.25px;
+  text-shadow: none;
+  border: 2px solid #5b3a29;
+  box-shadow: 2px 2px 0 #5b3a29;
+  border-radius: 2px;
+}
+
+.nameplate-goldfish { background: #ffd84d; }
+.nameplate-rohio { background: #f4b066; }
+.cat-nameplate {
+  font-family: "Silkscreen", monospace;
+  background: #fffaf2;
+  border: 1.5px solid #5b3a29;
+  box-shadow: 1px 1px 0 rgba(91, 58, 41, 0.65);
+  border-radius: 1px;
+  font-weight: 700;
+  letter-spacing: 0.1px;
+}
+
+.customer-nameplate {
+  font-family: "Silkscreen", monospace;
+  color: #5b3a29;
+  background: #fffaf2;
+  border: 2px solid #5b3a29;
+  box-shadow: 2px 2px 0 rgba(91, 58, 41, 0.7);
+  border-radius: 1px;
+  font-weight: 700;
+  letter-spacing: 0.2px;
+  pointer-events: none;
+}
+
+.pill {
+  background: #fffaf2;
+  border: 3px solid var(--ol);
+  border-radius: 999px;
+  box-shadow: 0 3px 0 rgba(91, 58, 41, 0.25);
+}
+
+.card {
+  background: #fdf3dc;
+  border: 4px solid #9cc47f;
+  border-radius: 22px;
+}
+
+.card-locked {
+  background: #f6ead2;
+  border: 4px solid transparent;
+  border-radius: 22px;
+}
+
+.panel {
+  background: #fdf8ef;
+  border: 4px solid var(--ol);
+  border-radius: 26px;
+  box-shadow: 0 6px 0 rgba(91, 58, 41, 0.25);
+}
+
+.tab {
+  background: #ffd567;
+  border: 3px solid var(--ol);
+  border-bottom-width: 6px;
+  border-color: var(--ol) var(--ol) #e3a93a var(--ol);
+  border-radius: 14px 14px 0 0;
+}
+.tab-active {
+  background: #fdf8ef;
+  border-bottom-color: #fdf8ef;
+}
+
+.btn {
+  border: 3px solid var(--ol);
+  border-radius: 16px;
+  box-shadow: 0 3px 0 var(--ol);
+  transition: transform 0.08s;
+}
+.btn:active { transform: translateY(2px); box-shadow: 0 1px 0 var(--ol); }
+
+.icon-btn {
+  background: #fffaf2;
+  border: 3px solid var(--ol);
+  border-radius: 14px;
+}
+
+.floor {
+  background-color: #f2c6a4;
+  background-image:
+    repeating-linear-gradient(0deg, transparent 0 46px, rgba(196, 128, 92, 0.35) 46px 48px),
+    radial-gradient(rgba(196,128,92,.18) 1px, transparent 1.4px);
+  background-size: 100% 48px, 9px 9px;
+}
+
+.wall {
+  background-color: #fbf1df;
+  background-image: radial-gradient(rgba(214, 184, 140, 0.25) 1px, transparent 1.5px);
+  background-size: 10px 10px;
+}
+
+@keyframes bob { 0%,100% { transform: translateY(0) } 50% { transform: translateY(-3px) } }
+.bob { animation: bob 1.6s ease-in-out infinite; }
+
+@keyframes pop { 0% { transform: scale(.4); opacity: 0 } 70% { transform: scale(1.08) } 100% { transform: scale(1); opacity: 1 } }
+.pop { animation: pop .28s ease-out; }
+
+@keyframes floatUp { 0% { transform: translateY(0); opacity: 1 } 100% { transform: translateY(-40px); opacity: 0 } }
+
+@keyframes shake { 0%,100% { transform: translateX(0) } 20% { transform: translateX(-4px) rotate(-4deg) } 40% { transform: translateX(4px) rotate(4deg) } 60% { transform: translateX(-3px) } 80% { transform: translateX(3px) } }
+.shake { animation: shake .45s ease-in-out; }
+
+@keyframes rohioDance {
+  0%, 100% { transform: translateY(0) rotate(0deg); }
+  20% { transform: translate(-8px, -10px) rotate(-10deg); }
+  45% { transform: translate(8px, 0) rotate(10deg); }
+  70% { transform: translate(-6px, -7px) rotate(-8deg); }
+}
+.rohio-dance { animation: rohioDance .58s steps(4, end) infinite; transform-origin: 50% 100%; }
+
+@keyframes rohioRewardFall {
+  0%, 50% { transform: rotate(0deg) translateY(0); }
+  75%, 100% { transform: rotate(72deg) translate(14px, 6px); }
+}
+.rohio-reward-fall { animation: rohioRewardFall .82s steps(5, end) infinite alternate; transform-origin: 50% 100%; }
+
+@keyframes sparkle { 0%,100% { transform: scale(1) rotate(0) } 50% { transform: scale(1.15) rotate(8deg) } }
+.sparkle { animation: sparkle 1.2s ease-in-out infinite; }
+
+.scroll-soft::-webkit-scrollbar { width: 10px; }
+.scroll-soft::-webkit-scrollbar-thumb { background: #f3a99a; border-radius: 10px; }
+.scroll-soft::-webkit-scrollbar-track { background: #f4ece0; border-radius: 10px; }
+
+/* ---------- Rohio reward animations ---------- */
+.anim-dance { animation: rohioDance .58s steps(4, end) infinite; transform-origin: 50% 100%; }
+.anim-fall { animation: rohioRewardFall .82s steps(5, end) infinite alternate; transform-origin: 50% 100%; }
+@keyframes rohioSpin { 0%, 100% { transform: scaleX(1); } 25% { transform: scaleX(.15); } 50% { transform: scaleX(-1); } 75% { transform: scaleX(-.15); } }
+.anim-spin { animation: rohioSpin .8s steps(8, end) infinite; transform-origin: 50% 100%; }
+@keyframes rohioFlex { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.1, .94) translateY(2px); } }
+.anim-flex { animation: rohioFlex .5s steps(2, end) infinite; transform-origin: 50% 100%; }
+@keyframes rohioSing { 0%, 100% { transform: translateY(0) rotate(-3deg); } 50% { transform: translateY(-4px) rotate(3deg); } }
+.anim-sing { animation: rohioSing .6s steps(3, end) infinite; transform-origin: 50% 100%; }
+@keyframes rohioCartwheel { 0% { transform: translateX(-26px) rotate(0deg); } 100% { transform: translateX(26px) rotate(360deg); } }
+.anim-cartwheel { animation: rohioCartwheel 1s steps(8, end) infinite alternate; transform-origin: 50% 60%; }
+@keyframes groove { 0%, 100% { transform: translateY(0) rotate(0); } 50% { transform: translateY(-3px) rotate(3deg); } }
+.groove { animation: groove .5s steps(2, end) infinite; transform-origin: 50% 100%; }
+
+/* ---------- ambience ---------- */
+@keyframes noteFloat { 0% { transform: translate(0, 0); opacity: 0; } 15% { opacity: 1; } 100% { transform: translate(16px, -48px); opacity: 0; } }
+.note { position: absolute; animation: noteFloat 2.1s linear infinite; pointer-events: none; }
+@keyframes mopSwing { 0%, 100% { transform: rotate(-20deg); } 50% { transform: rotate(20deg); } }
+.mop { animation: mopSwing .32s steps(2, end) infinite; transform-origin: 50% 100%; }
+.rain-overlay {
+  background-image: repeating-linear-gradient(105deg, rgba(255, 255, 255, .2) 0 2px, transparent 2px 22px);
+  background-size: 44px 44px;
+  animation: rainFall .35s linear infinite;
+}
+@keyframes rainFall { from { background-position: 0 0; } to { background-position: -12px 44px; } }
+.stars-overlay {
+  background-image: radial-gradient(#fff6c7 1.4px, transparent 1.6px), radial-gradient(#ffffff 1px, transparent 1.2px);
+  background-size: 90px 70px, 130px 110px;
+  background-position: 10px 20px, 50px 40px;
+  animation: twinkle 2.4s steps(2, end) infinite;
+}
+@keyframes twinkle { 0%, 100% { opacity: .9; } 50% { opacity: .55; } }
+.hud-scroll::-webkit-scrollbar { display: none; }
+
+/* ================= Landscape phone layout ================= */
+.game-shell { display: flex; flex-direction: column; }
+
+/* character preview scales live in CSS so short screens can shrink them */
+.prev-g { transform: scale(1.45); transform-origin: bottom; }
+.prev-r { transform: scale(1.33); transform-origin: bottom; }
+.scene-g { transform: scale(2); transform-origin: bottom; }
+.scene-r { transform: scale(1.85); transform-origin: bottom; }
+.scene-umbrella { left: 50%; bottom: 168px; transform: translateX(-50%); }
+.wardrobe-preview { height: 178px; gap: 40px; }
+
+/* rotate prompt, only for portrait phones */
+.rotate-gate { display: none; }
+@media (orientation: portrait) and (max-width: 700px) {
+  .rotate-gate { display: flex; }
+}
+
+@keyframes rotatePhone {
+  0%, 12% { transform: rotate(0deg); }
+  42%, 62% { transform: rotate(-90deg); }
+  92%, 100% { transform: rotate(0deg); }
+}
+.rotate-phone { animation: rotatePhone 2.6s ease-in-out infinite; transform-origin: 50% 50%; }
+
+/* landscape phone / short window: rails on both sides, stage uses full height */
+@media (orientation: landscape) and (max-height: 560px) {
+  .game-shell { flex-direction: row; }
+  .rail-hud {
+    flex-direction: column;
+    align-items: stretch;
+    justify-content: flex-start;
+    width: 122px;
+    max-width: 30vw;
+    height: 100%;
+    overflow-y: auto;
+    overflow-x: hidden;
+    gap: 5px;
+    padding: 6px 8px 6px max(8px, env(safe-area-inset-left));
+  }
+  .rail-hud > * { width: 100%; flex-shrink: 0; }
+  .rail-hud .pill { justify-content: flex-start; font-size: 11px; padding-left: 6px; padding-right: 6px; }
+  .rail-hud .hud-event, .rail-hud .hud-help { display: none; }
+  .rail-btn {
+    grid-template-columns: 1fr;
+    align-content: start;
+    align-items: stretch;
+    width: 84px;
+    max-width: 22vw;
+    height: 100%;
+    overflow-y: auto;
+    gap: 4px;
+    padding: 6px max(8px, env(safe-area-inset-right)) 6px 0;
+  }
+  .rail-btn .icon-btn { width: 100%; }
+  .wardrobe-preview { height: 104px; gap: 18px; }
+  .prev-g { transform: scale(.92); }
+  .prev-r { transform: scale(.85); }
+  .scene-g { transform: scale(1.5); }
+  .scene-r { transform: scale(1.4); }
+  .scene-umbrella { bottom: 116px; transform: translateX(-50%) scale(.72); }
+  .hand-preview { right: max(96px, 23vw); bottom: 8px; }
+}
